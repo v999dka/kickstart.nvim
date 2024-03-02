@@ -148,6 +148,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- Custom vim option
+vim.opt.colorcolumn = '80'
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -160,6 +163,14 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+-- Custom remaps
+vim.keymap.set('n', 'Y', 'y$')
+vim.keymap.set('n', 'X', 'Vx$')
+vim.keymap.set('n', '<leader>o', 'o<Esc>k')
+vim.keymap.set('n', '<leader>O', 'O<Esc>j')
+vim.keymap.set('i', '<C-c>', '<Esc>')
+vim.keymap.set('n', '<leader>fb', vim.cmd.Rex, { desc = '[F]ile[B]rowser' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -283,6 +294,7 @@ require('lazy').setup {
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+        ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -546,6 +558,15 @@ require('lazy').setup {
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
+        ruby_ls = {
+          cmd = { 'ruby-lsp' },
+          filetypes = { 'ruby' },
+          root_dir = require('lspconfig.util').root_pattern('Gemfile', '.git'),
+          init_options = {
+            formatter = 'auto',
+          },
+          single_file_support = true,
+        },
 
         lua_ls = {
           -- cmd = {...},
@@ -813,6 +834,28 @@ require('lazy').setup {
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information see: :help lazy.nvim-lazy.nvim-structuring-your-plugins
   -- { import = 'custom.plugins' },
+
+  {
+    'tpope/vim-fugitive',
+    keys = {
+      { '<leader>gs', ':G<CR>', desc = '[G]it [S]how' },
+      {
+        '<leader>gp',
+        function()
+          vim.cmd.Git { 'push' }
+        end,
+        desc = '[G]it [P]ush default',
+      },
+      {
+        '<leader>gP',
+        function()
+          vim.cmd.Git { 'pull', '--rebase' }
+        end,
+        desc = '[G]it [P]ull rebase',
+      },
+      { '<leader>go', ':Git push -u origin', desc = '[G]it [P]ush to [O]rigin' },
+    },
+  },
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
