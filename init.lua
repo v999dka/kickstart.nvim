@@ -170,7 +170,7 @@ vim.keymap.set('n', 'X', 'Vx$')
 vim.keymap.set('n', '<leader>o', 'o<Esc>k')
 vim.keymap.set('n', '<leader>O', 'O<Esc>j')
 vim.keymap.set('i', '<C-c>', '<Esc>')
-vim.keymap.set('n', '<leader>fb', vim.cmd.Rex, { desc = '[F]ile[B]rowser' })
+vim.keymap.set('n', '<leader>fe', vim.cmd.Rex, { desc = '[F]ile [E]xplorer' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -826,64 +826,14 @@ require('lazy').setup {
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.indent_line',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information see: :help lazy.nvim-lazy.nvim-structuring-your-plugins
-  -- { import = 'custom.plugins' },
-
-  {
-    'tpope/vim-fugitive',
-    keys = {
-      { '<leader>gs', ':G<CR>', desc = '[G]it [S]how' },
-      {
-        '<leader>gp',
-        function()
-          vim.cmd.Git { 'push' }
-        end,
-        desc = '[G]it [P]ush default',
-      },
-      {
-        '<leader>gP',
-        function()
-          vim.cmd.Git { 'pull', '--rebase' }
-        end,
-        desc = '[G]it [P]ull rebase',
-      },
-      { '<leader>go', ':Git push -u origin', desc = '[G]it [P]ush to [O]rigin' },
-    },
-  },
-  {
-    'zbirenbaum/copilot.lua',
-    cmd = 'Copilot',
-    event = 'InsertEnter',
-    config = function()
-      require('copilot').setup {}
-    end,
-  },
-  {
-    'CopilotC-Nvim/CopilotChat.nvim',
-    branch = 'canary',
-    dependencies = {
-      { 'zbirenbaum/copilot.lua' }, -- or github/copilot.vim
-      { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
-      { 'nvim-telescope/telescope.nvim' }, -- for telescope help actions (optional)
-    },
-    opts = {
-      debug = true, -- Enable debugging
-      -- See Configuration section for rest
-    },
-    event = 'VeryLazy',
-    keys = {
-      { '<leader>ccb', ':CopilotChat ', desc = 'CopilotChat "text" - Send that text to chat' },
-      { '<leader>cct', ':CopilotChatToggle<CR>', desc = 'CopilotChat - Toggle window' },
-      { '<leader>ccr', ':CopilotChatReset<CR>', desc = 'CopilotChat - Reset chat' },
-      { '<leader>ccd', ':CopilotChatDebugInfo<CR>', desc = 'CopilotChat - Debug info' },
-    }, -- See Commands section for default commands if you want to lazy load on them
-  },
+  { import = 'custom.plugins' },
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
